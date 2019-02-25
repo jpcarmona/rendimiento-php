@@ -60,7 +60,7 @@ for con in CONN:
 
     for server in SERVERS:
         time.sleep(2)
-        print('Reiniciando {}...'.format(server))
+        print('\nReiniciando {}...'.format(server))
         try:
             subprocess.run(['systemctl','restart','apache2'],stderr=DEVNULL,stdout=DEVNULL,check=True)
             print(server+' reiniciado con éxito')
@@ -68,7 +68,7 @@ for con in CONN:
             print('Error al reiniciar '+server)
 
     lcon=[]
-    print('Conexiones concurrentes: {}'.format(con))
+    print('\nConexiones concurrentes: {}'.format(con))
 
     for url in URLS:
         print('URL: http://{}/{}'.format(IP,url))
