@@ -30,7 +30,7 @@ def check_install(paquete):
     print('\nComprobar estado de '+paquete+':')
     try:
         subprocess.run(['dpkg','-s',paquete],stderr=DEVNULL,stdout=DEVNULL,check=True)
-        print('\tInstalada\n')
+        print('\tInstalada')
     except subprocess.CalledProcessError:
         print('\tNo instalada\n')
         print('Instalación:\tapt -y install '+paquete+'\n')
