@@ -1,33 +1,70 @@
 #-*- coding: utf-8 -*-
 
-import os
-import time
-import subprocess
+import time, subprocess
+from subprocess import DEVNULL
 
-# Configuración
+## Configuración dinámica
+TITULO='Apache2 php-mod'
+# Servidores que se tienen que reiniciar
+SERVERS=['apache2']
+##
+
+## Configuración estática
 # Se van a realizar pruebas de rendimiento con la siguiente lista de peticiones concurrentes
 CONN =[1,10,25,50,75,100]
-TITULO='Apache2 php-mod'
 # Tiempo de la prueba
 DURATION='10'
 IP='www.juanpe-wordpress.org'
 # Las url no tienen que tener / al principio
 URLS=['','?p=1','?p=6','?m=201902','?s=prueba']
-# Servidores que se tienen que reiniciar
-SERVERS=['apache2']
+ab_check=False
+apache2_check=True
+root_check=True
+##
 
 ##############################################################################################################
 resultados=[]
 
+## Comprobar que estan instalados los paquetes necesarios
+def check_install(paquete):
+    print('\nComprobar estado de '+paquete+':')
+    try:
+        subprocess.run(['dpkg','-s',paquete],stderr=DEVNULL,stdout=DEVNULL,check=True)
+        print('\tInstalada\n')
+    except subprocess.CalledProcessError:
+        print('\tNo instalada\n')
+        print('Instalación:\tapt -y install '+paquete+'\n')
+        exit()
+
+if ab_check:
+    check_install('apach2-utils')
+
+if apache2_check:
+    check_install('apache2')
+
+##
+
+## Comprobar si se ejecuta como root
+def check_root():
+    user=subprocess.getoutput('whoami')
+    if user!='root':
+        exit()
+
+if root_check:
+    check_root()
+
+##
+
+## Programa principal
 for con in CONN:
 
     for server in SERVERS:
         time.sleep(2)
         print('Reiniciando {}...'.format(server))
-        reinicio=subprocess.run(['systemctl','restart','apache2'])
-        if reinicio.returncode==0:
+        try:
+            subprocess.run(['systemctl','restart','apache2'],stderr=DEVNULL,stdout=DEVNULL,check=True)
             print(server+' reiniciado con éxito')
-        else:
+        except subprocess.CalledProcessError:
             print('Error al reiniciar '+server)
 
     lcon=[]
@@ -50,14 +87,14 @@ for con in CONN:
     resultados.append(lcon)
     # Tiempo para que se terminen de hacer las pruebas 
     time.sleep(1)
+##
 
-# Mostrar resultados para generar gráfico
-print('\n'+TITULO'\n')
+## Mostrar resultados para generar gráfico
+print('\n'+TITULO+'\n')
 print('\nConexiones:\n')
 for con in CONN:
     print(con)
 print('\nResultados: #/seg\n')
 for lista in resultados:
     print(int(sum(lista)/len(lista)))
-
-
+##
