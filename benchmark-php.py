@@ -4,9 +4,9 @@ import time, subprocess
 from subprocess import DEVNULL
 
 ## Configuración dinámica
-TITULO='Apache2 php-fpm'
+TITULO='Nginx php-fpm'
 # Servidores que se tienen que reiniciar
-SERVERS=['apache2','php7.0-fpm']
+SERVERS=['nginx','php7.0-fpm']
 ##
 
 ## Configuración estática
