@@ -4,9 +4,9 @@ import time, subprocess
 from subprocess import DEVNULL
 
 ## Configuración dinámica
-TITULO='Apache2 php-mod'
+TITULO='Apache2 php-fpm'
 # Servidores que se tienen que reiniciar
-SERVERS=['apache2']
+SERVERS=['apache2','php7.0-fpm']
 ##
 
 ## Configuración estática
@@ -18,7 +18,7 @@ IP='www.juanpe-wordpress.org'
 # Las url no tienen que tener / al principio
 URLS=['','?p=1','?p=6','?m=201902','?s=prueba']
 ab_check=False
-apache2_check=True
+servers_check=True
 root_check=True
 ##
 
@@ -39,8 +39,9 @@ def check_install(paquete):
 if ab_check:
     check_install('apach2-utils')
 
-if apache2_check:
-    check_install('apache2')
+if servers_check:
+    for server in SERVERS:
+        check_install(server)
 
 ##
 
