@@ -90,7 +90,7 @@ for con in CONN:
 ##
 
 ## Mostrar resultados para generar gráfico
-print('\n'+TITULO+'\n')
+print('\n'+TITULO)
 print('\nConexiones:\n')
 for con in CONN:
     print(con)
