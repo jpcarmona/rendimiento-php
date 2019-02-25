@@ -63,7 +63,7 @@ for con in CONN:
         time.sleep(2)
         print('\nReiniciando {}...'.format(server))
         try:
-            subprocess.run(['systemctl','restart','apache2'],stderr=DEVNULL,stdout=DEVNULL,check=True)
+            subprocess.run(['systemctl','restart',server],stderr=DEVNULL,stdout=DEVNULL,check=True)
             print(server+' reiniciado con éxito')
         except subprocess.CalledProcessError:
             print('Error al reiniciar '+server)
