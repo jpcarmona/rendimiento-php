@@ -25,6 +25,18 @@ root_check=True
 ##############################################################################################################
 resultados=[]
 
+## Comprobar si se ejecuta como root
+def check_root():
+    user=subprocess.getoutput('whoami')
+    if user!='root':
+        print('\tDebes ser ROOT para ejecutar este script\n')
+        exit()
+
+if root_check:
+    check_root()
+
+##
+
 ## Comprobar que estan instalados los paquetes necesarios
 def check_install(paquete):
     print('\nComprobar estado de '+paquete+':')
@@ -42,17 +54,6 @@ if ab_check:
 if servers_check:
     for server in SERVERS:
         check_install(server)
-
-##
-
-## Comprobar si se ejecuta como root
-def check_root():
-    user=subprocess.getoutput('whoami')
-    if user!='root':
-        exit()
-
-if root_check:
-    check_root()
 
 ##
 
