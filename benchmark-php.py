@@ -73,7 +73,7 @@ for con in CONN:
     print('\nConexiones concurrentes: {}'.format(con))
 
     for url in URLS:
-        print('URL: http://{}/{}'.format(IP,url))
+        print('\t--URL: http://{}/{}'.format(IP,url))
         res=subprocess.getoutput('ab -t {} -k -c {} http://{}/{}'.format(DURATION,con,IP,url))
         # Recoger resultado "#/sec"
         try:
